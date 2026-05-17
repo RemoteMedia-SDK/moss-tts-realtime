@@ -25,7 +25,7 @@
 
 [plugin]
 name        = "moss-tts-realtime"
-version     = "0.2.0"
+version     = "0.2.1"
 language    = "rust"
 description = "MOSS-TTS-Realtime as a single-file Python plugin — text deltas → audio chunks. Rust cdylib that embeds + provisions Python on first load."
 
