@@ -34,7 +34,7 @@ crate-type = ["cdylib", "rlib"]
 # - End-to-end text-delta-in / audio-chunks-out round-trip.
 
 [dependencies]
-remotemedia-plugin-sdk = { git = "https://github.com/RemoteMedia-SDK/remotemedia-sdk.git", rev = "f195f03a25e5b3b6157f0a5e29c1aceb72be73b8", features = ["python-plugin"] }
+remotemedia-plugin-sdk = { git = "https://github.com/RemoteMedia-SDK/remotemedia-sdk.git", rev = "7a0068f70348830dc134a5fcbd083fe28b723541", features = ["python-plugin"] }
 
 # `abi_stable` must be a direct dep so the attribute macros expanded
 # by `plugin_export!()` (`#[sabi_extern_fn]`, `#[export_root_module]`)
