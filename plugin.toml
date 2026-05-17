@@ -1,0 +1,34 @@
+# MOSS-TTS-Realtime shipped as a Rust cdylib that embeds Python source
+# via `include_dir!` (Path 4 — `python_plugin_export!` macro). On first
+# load the cdylib extracts its embedded `moss_tts_realtime.py` +
+# `_vendor/mossttsrealtime/` package to a content-addressed cache,
+# provisions a managed uv venv from its `@python_requires([...])`
+# declaration (transformers>=5.0, torch>=2.1, torchaudio>=2.1,
+# accelerate>=0.33, safetensors<0.5, torchcodec), spawns
+# `python -m remotemedia.core.multiprocessing.runner`, and round-trips
+# RuntimeData over iceoryx2 shared memory.
+#
+# A consumer references this from a manifest as either:
+#
+#   "plugins": ["moss-tts-realtime@v0.1.0"]
+#       (canonical-org shorthand → github.com/RemoteMedia-SDK/moss-tts-realtime)
+#
+#   "plugins": ["./plugins/libmoss_tts_realtime_loadable_plugin.so"]
+#       (local path — for development before the release flow exists)
+#
+# The resolver fetches this file from raw.githubusercontent.com first
+# (cheap, validates the spec + lists node types). Because language="rust"
+# the resolver then falls through to `release-manifest.json` for the
+# actual platform-specific cdylib — NOT to source-load. The Python
+# inside is an implementation detail of the cdylib, opaque to the
+# resolver's dispatch.
+
+[plugin]
+name        = "moss-tts-realtime"
+version     = "0.1.0"
+language    = "rust"
+description = "MOSS-TTS-Realtime as a single-file Python plugin — text deltas → audio chunks. Rust cdylib that embeds + provisions Python on first load."
+
+[rust]
+node_types    = ["MossTTSRealtimeNode"]
+asset_pattern = "lib{name}-{arch}-{os}.{ext}"
